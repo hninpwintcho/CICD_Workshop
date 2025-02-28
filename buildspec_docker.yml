@@ -31,5 +31,5 @@ phases:
       - export IMAGE_SHA=$(aws ecr describe-images --repository-name $REPO_NAME --image-ids imageTag=$IMAGE_TAG | jq -r "(.imageDetails[0].imageDigest)")
       - echo Signing the latest image pushed to ECR
       - export IMAGE_SHA_ARN=$IMAGE_REPO_URI@$IMAGE_SHA
-      - notation sign $IMAGE_SHA_ARN --plugin com.amazonaws.signer.notation.plugin --id $SIGNER_PROFILE_ARN
+      - notation sign $IMAGE_SHA_ARN --plugin com.amazonaws.signer.notation.plugin --id arn:aws:signer:us-east-2:142505060975:/signing-profiles/ecr_signing_profile
       - notation inspect $IMAGE_SHA_ARN
