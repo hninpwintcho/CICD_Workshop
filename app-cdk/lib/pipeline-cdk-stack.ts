@@ -39,8 +39,8 @@ export class PipelineCdkStack extends Stack {
     const dockerBuild = new codebuild.PipelineProject(this, 'DockerBuild', {
       environmentVariables: {
         IMAGE_TAG: { value: 'latest' },
-        IMAGE_REPO_URI: { value: '142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn'},
-        AWS_DEFAULT_REGION: { value: 'us-east-2' },
+        IMAGE_REPO_URI: { value: props.ecrRepository.repositoryUri },
+        AWS_DEFAULT_REGION: { value: process.env.CDK_DEFAULT_REGION },
       },
       environment: {
         buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
