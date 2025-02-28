@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: latest
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn
+    commands:
+      - cd ./my-app
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t myapp:latest .
+      - docker tag myapp:latest 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn:latest
