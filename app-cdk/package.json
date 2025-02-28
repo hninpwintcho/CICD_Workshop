@@ -9,6 +9,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk"
+    
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
