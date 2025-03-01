@@ -151,6 +151,7 @@ class PipelineCdkStack(Stack):
             stage_name = 'Docker-Push-ECR',
             actions = [docker_build_action]
         )
+        
         pipeline.add_stage(
             stage_name = 'Deploy-Test',
             actions = [
