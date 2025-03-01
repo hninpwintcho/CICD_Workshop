@@ -29,14 +29,15 @@ class PipelineCdkStack(Stack):
         )
 
         code_quality_build = codebuild.PipelineProject(
-            self, 'CodeBuild',
+            self, 'Code Quality',
             build_spec = codebuild.BuildSpec.from_source_filename('./buildspec_test.yml'),
             environment = codebuild.BuildEnvironment(
                 build_image = codebuild.LinuxBuildImage.STANDARD_5_0,
                 privileged = True,
-                compute_type = codebuild.ComputeType.LARGE
+                compute_type = codebuild.ComputeType.LARGE,
             ),
         )
+
         docker_build_project = codebuild.PipelineProject(
             self, 'Docker Build',
             build_spec = codebuild.BuildSpec.from_source_filename('./buildspec_docker.yml'),
@@ -91,7 +92,7 @@ class PipelineCdkStack(Stack):
           output = source_output,
           branch = "main",
           trigger_on_push = True,
-          connection_arn = "arn:aws:codeconnections:us-east-2:142505060975:connection/62adda1a-a71b-4ac1-be94-9a9036906ba2"
+          connection_arn=SourceConnection.attr_connection_arn
         )
 
         pipeline.add_stage(
@@ -107,9 +108,10 @@ class PipelineCdkStack(Stack):
         )
 
         pipeline.add_stage(
-            stage_name = 'Code-Quality-Testing',
+            stage_name = 'Code-Unit-Tests',
             actions = [build_action]
         )
+
         docker_build_action = codepipeline_actions.CodeBuildAction(
             action_name = 'Docker-Build',
             project = docker_build_project,
