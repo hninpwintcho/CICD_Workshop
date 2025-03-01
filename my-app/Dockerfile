@@ -1,17 +1,17 @@
-FROM public.ecr.aws/docker/library/node:18-alpine AS development
+FROM public.ecr.aws/docker/library/python:3.7-slim-buster AS development
 
-RUN mkdir /app && chown node:node /app
 WORKDIR /app
 
-ENV NODE_ENV development
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PIP_ROOT_USER_ACTION=ignore
+ENV FLASK_APP=app.py
+ENV FLASK_DEBUG=1
 
-USER node
+COPY . /app/
 
-COPY --chown=node:node package.json package-lock.json* ./
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
-RUN npm install
-
-COPY --chown=node:node . .
-
-EXPOSE 8081
-CMD [ "npm", "run", "dev" ]
+ENTRYPOINT [ "python3" ]
+CMD [ "app.py" ]
