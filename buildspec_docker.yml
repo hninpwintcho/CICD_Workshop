@@ -6,6 +6,11 @@ phases:
       python: 3.8  # Corrected syntax
   pre_build:
     commands:
+      - echo Downloading AWS signer and Notation CLI.
+      - wget https://d2hvyiie56hcat.cloudfront.net/linux/amd64/installer/deb/latest/aws-signer-notation-cli_amd64.deb
+      - echo Installing AWS signer and Notation CLI.
+      - sudo dpkg -i -E aws-signer-notation-cli_amd64.deb
+      - notation version
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj
   build:
@@ -18,5 +23,15 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
+      - echo Getting ECR repository name in which the container image is pushed.
+      - export REPO_NAME=$(echo 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj | awk -F'/' '{print $2}')
+      - export IMAGE_TAG=latest  # Set the image tag
       - echo Pushing the Docker image...
       - docker push 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest
+      - echo Getting SHA digest of the latest image pushed.
+      - export IMAGE_SHA=$(aws ecr describe-images --repository-name $REPO_NAME --image-ids imageTag=$IMAGE_TAG | jq -r "(.imageDetails[0].imageDigest)")
+      - echo Signing the latest image pushed to ECR
+      - export IMAGE_SHA_ARN=142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj@$IMAGE_SHA
+      - export SIGNING_PROFILE_ARN="arn:aws:signer:us-east-2:142505060975:/signing-profiles/ecr_signing_profile1/ST1ojEd8Qy"  # Ensure the correct ARN for signing profile
+      - notation sign $IMAGE_SHA_ARN --plugin com.amazonaws.signer.notation.plugin --id $SIGNING_PROFILE_ARN
+      - notation inspect $IMAGE_SHA_ARN
