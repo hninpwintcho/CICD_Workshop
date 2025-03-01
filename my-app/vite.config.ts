@@ -11,9 +11,13 @@ export default defineConfig({
   server: {
     host: true,
     port: 8081,
+    allowedHosts: [
+      'test-a-testf-4ktox7iaydce-2128511845.us-east-2.elb.amazonaws.com', // ALB hostname
+      'd24srs7fuujdui.cloudfront.net'  // CloudFront (if needed)
+    ]
   },
   test: {
     globals: true,
     environment: 'jsdom',
-  },  
-})
+  },
+});

@@ -33,3 +33,8 @@ phases:
       - export IMAGE_SHA_ARN=$IMAGE_REPO_URI@$IMAGE_SHA
       - notation sign $IMAGE_SHA_ARN --plugin com.amazonaws.signer.notation.plugin --id arn:aws:signer:us-east-2:142505060975:/signing-profiles/ecr_signing_profile
       - notation inspect $IMAGE_SHA_ARN
+      - echo Writing image definitions file...
+      - printf '[{"name":"my-app","imageUri":"%s"}]' 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn:latest > $CODEBUILD_SRC_DIR/imagedefinitions.json
+
+artifacts:
+    files: imagedefinitions.json
