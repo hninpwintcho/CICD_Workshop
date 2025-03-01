@@ -32,9 +32,7 @@ phases:
       - export IMAGE_SHA=$(aws ecr describe-images --repository-name ecr-stack-myapp0cc8c715-62zjpfxgjbgj --image-ids imageTag=latest | jq -r "(.imageDetails[0].imageDigest)")
       - echo Signing the latest image pushed to ECR
       - export IMAGE_SHA_ARN=142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj@$IMAGE_SHA
-      - export SIGNING_PROFILE_ARN="arn:aws:signer:us-east-2:142505060975:/signing-profiles/ecr_signing_profile1/ST1ojEd8Qy"  # Ensure the correct ARN for signing profile
-      - notation sign 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj@sha256:0d5f8dcf6f297a36f268820a33fbc80cee3a1fc48857fdc77b47941b3cbcc4ef \
-        --plugin com.amazonaws.signer.notation.plugin \
-        --id arn:aws:signer:us-east-2:142505060975:/signing-profiles/ecr_signing_profile1
+      - export SIGNING_PROFILE_ARN="arn:aws:signer:us-east-2:142505060975:/signing-profiles/ecr_signing_profile1"  # Ensure the correct ARN for signing profile
+      - notation sign $IMAGE_SHA_ARN --plugin com.amazonaws.signer.notation.plugin --id $SIGNER_PROFILE_ARN
 
       
