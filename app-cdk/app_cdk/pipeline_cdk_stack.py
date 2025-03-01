@@ -92,7 +92,7 @@ class PipelineCdkStack(Stack):
           output = source_output,
           branch = "main",
           trigger_on_push = True,
-          connection_arn=SourceConnection.attr_connection_arn
+          connection_arn = "arn:aws:codeconnections:us-east-2:142505060975:connection/62adda1a-a71b-4ac1-be94-9a9036906ba2"
         )
 
         pipeline.add_stage(
