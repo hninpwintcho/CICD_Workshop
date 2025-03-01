@@ -1,4 +1,4 @@
-##!/usr/bin/env python3
+#!/usr/bin/env python3
 import aws_cdk as cdk
 
 from app_cdk.app_cdk_stack import AppCdkStack
