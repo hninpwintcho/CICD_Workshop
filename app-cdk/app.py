@@ -11,9 +11,15 @@ app_stack = AppCdkStack(
     'app-stack'
 )
 
+ecr_stack = EcrCdkStack(
+    app,
+    'ecr-stack'
+)
+
 pipeline_stack = PipelineCdkStack(
     app,
     'pipeline-stack',
+    ecr_repository = ecr_stack.ecr_data,
 )
 
 app.synth()
