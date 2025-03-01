@@ -3,38 +3,21 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: latest
+      python:: latest
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn
-      - echo Downloading AWS Signer and Notation CLI
-      - wget https://d2hvyiie56hcat.cloudfront.net/linux/amd64/installer/deb/latest/aws-signer-notation-cli_amd64.deb
-      - echo Installing AWS Signer and Notation CLI
-      - sudo dpkg -i -E aws-signer-notation-cli_amd64.deb
-      - notation version
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj
   build:
     commands:
       - cd ./my-app
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t myapp:latest .
-      - docker tag myapp:latest 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn:latest
+      - docker tag myapp:latest 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn:latest
-      - echo Getting ECR repository name in which the container image is pushed
-      - export REPO_NAME=$(echo $IMAGE_REPO_URI | awk -F'/' '{print $2}')
-      - echo Getting SHA digest of the latest image pushed
-      - export IMAGE_SHA=$(aws ecr describe-images --repository-name $REPO_NAME --image-ids imageTag=$IMAGE_TAG | jq -r "(.imageDetails[0].imageDigest)")
-      - echo Signing the latest image pushed to ECR
-      - export IMAGE_SHA_ARN=$IMAGE_REPO_URI@$IMAGE_SHA
-      - notation sign $IMAGE_SHA_ARN --plugin com.amazonaws.signer.notation.plugin --id arn:aws:signer:us-east-2:142505060975:/signing-profiles/ecr_signing_profile
-      - notation inspect $IMAGE_SHA_ARN
-      - echo Writing image definitions file...
-      - printf '[{"name":"my-app","imageUri":"%s"}]' 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp4aca6506-awnilceyvrxn:latest > $CODEBUILD_SRC_DIR/imagedefinitions.json
-
-artifacts:
-    files: imagedefinitions.json
+      - docker push 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest
+      
