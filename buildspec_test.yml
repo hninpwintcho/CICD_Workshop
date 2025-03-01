@@ -3,20 +3,15 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: latest
+      python: latest
   pre_build:
     commands:
       - cd ./my-app
-      - echo Installing npm packages...
-      - npm install
+      - echo Installing python packages...
+      - python -m venv .venv
+      - . .venv/bin/activate
+      - pip install -r requirements.txt
   build:
     commands:
       - echo run tests...
-      - CI=true npm run test:junit
-
-reports:
-  jest_reports:
-    files:
-      - junit.xml
-    file-format: JUNITXML
-    base-directory: my-app
+      - python -m pytest
