@@ -41,12 +41,12 @@ class PipelineCdkStack(Stack):
 
         source_action = codepipeline_actions.CodeStarConnectionsSourceAction(
           action_name = 'GitHub',
-          owner = "{{organizationName}}",
+          owner = "hninpwintcho",
           repo = "cicd-workshop",
           output = source_output,
           branch = "main",
           trigger_on_push = True,
-          connection_arn = "{{connectionARN}}"
+          connection_arn = "arn:aws:codeconnections:us-east-2:142505060975:connection/420bfb2b-6d35-4b84-8c37-a03771776094"
         )
 
         pipeline.add_stage(
