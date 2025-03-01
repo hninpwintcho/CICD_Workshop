@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python:: 3.8
+      python: 3.8  # Corrected syntax
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -20,4 +20,3 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest
-      
