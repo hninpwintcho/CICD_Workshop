@@ -1,7 +1,4 @@
 version: 0.2
-env:
-  parameter-store:
-    SIGNER_PROFILE_ARN: 'signer-profile-arn'
 
 phases:
   install:
@@ -9,24 +6,22 @@ phases:
       python: latest
   pre_build:
     commands:
-      - echo Downloading AWS signer and Notation CLI.
-      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $IMAGE_REPO_URI
   build:
     commands:
       - cd ./my-app
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t myapp:latest .
-      - docker tag myapp:latest 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest
+      - docker build -t myapp:$IMAGE_TAG .
+      - docker tag myapp:$IMAGE_TAG $IMAGE_REPO_URI:$IMAGE_TAG
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest
+      - docker push $IMAGE_REPO_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"my-app","imageUri":"%s"}]' 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest > $CODEBUILD_SRC_DIR/imagedefinitions.json
+      - printf '[{"name":"my-app","imageUri":"%s"}]' $IMAGE_REPO_URI:$IMAGE_TAG > ./build/imagedefinitions.json
 
 artifacts:
   files: imagedefinitions.json
-
-    
