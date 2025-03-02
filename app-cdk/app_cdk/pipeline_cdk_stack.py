@@ -124,11 +124,11 @@ class PipelineCdkStack(Stack):
         source_action = codepipeline_actions.CodeStarConnectionsSourceAction(
           action_name = 'GitHub',
           owner = "hninpwintcho",
-          repo = "cicd-workshop",
+          repo = "CICD_Workshop",
           output = source_output,
           branch = "main",
           trigger_on_push = True,
-          connection_arn = "arn:aws:codeconnections:us-east-2:142505060975:connection/62adda1a-a71b-4ac1-be94-9a9036906ba2"
+          connection_arn = "arn:aws:codeconnections:us-east-2:142505060975:connection/628d46c1-ee89-47be-a926-11099580477f"
         )
         
 
