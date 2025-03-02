@@ -1,5 +1,5 @@
 {
-    "executionRoleArn": "arn:aws:iam::142505060975:role/prod-app-stack-serviceTaskDefExecutionRole39FD5935-CMCRmQX599pl",
+    "executionRoleArn": "arn:aws:iam::142505060975:role/test-app-stack-serviceTaskDefExecutionRole39FD5935-y5MNBpHcEzvP",
     "containerDefinitions": [
         {
             "name": "my-app",
@@ -14,7 +14,7 @@
             "essential": true
         }
     ],
-    "family": "prodappstackserviceTaskDef3574354D",
+    "family": "testappstackserviceTaskDefF3E42B2B",
     "requiresCompatibilities": [
         "FARGATE"
     ],
