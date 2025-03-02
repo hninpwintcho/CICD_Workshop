@@ -25,10 +25,8 @@ phases:
       - docker push 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest
       - echo Writing image definitions file...
       - printf '[{"name":"my-app","imageUri":"%s"}]' 142505060975.dkr.ecr.us-east-2.amazonaws.com/ecr-stack-myapp0cc8c715-62zjpfxgjbgj:latest > $CODEBUILD_SRC_DIR/imagedefinitions.json
-      - echo Writing task definition file...
-      - cp taskdef.json $CODEBUILD_SRC_DIR/taskdef.json  # Ensure taskdef.json exists
 
 artifacts:
   files:
     - imagedefinitions.json
-    - taskdef.json
+    
