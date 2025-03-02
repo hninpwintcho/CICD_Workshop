@@ -128,7 +128,7 @@ class PipelineCdkStack(Stack):
           output = source_output,
           branch = "main",
           trigger_on_push = True,
-          connection_arn = "arn:aws:codeconnections:us-east-2:142505060975:connection/628d46c1-ee89-47be-a926-11099580477f"
+          connection_arn = "arn:aws:codeconnections:us-east-2:142505060975:connection/8894d632-8c7f-4306-953f-2ab5777a62e6"
         )
         
 
