@@ -28,7 +28,7 @@ phases:
       - echo Writing task definition file...
       - cp taskdef.json $CODEBUILD_SRC_DIR/taskdef.json  # Ensure taskdef.json exists
 
-  artifacts:
-    files: 
-      - imagedefinitions.json
-      - taskdef.json
+artifacts:
+  files:
+    - imagedefinitions.json
+    - taskdef.json
